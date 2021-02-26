@@ -5,15 +5,24 @@ import SearchBar from "./SearchBar";
 import TodayWeather from "./TodayWeather";
 import DailyCol from "./DailyCol";
 import HourlyRow from "./HourlyRow";
-import "./style/App.css";
+import "../style/App.css";
+import { withRouter } from "react-router-dom";
 
-function WeatherPage() {
+function HomePage(props: any) {
   const [apiInfo, setApiInfo] = useState<apiStructure>();
   const [locationCoords, setLocationCoords] = useState<locCoords>({
     lat: 51.5085,
     lon: -0.1257,
   });
   const [query, setQuery] = useState<string>("London");
+
+  useEffect(() => {
+    if (props.location.search !== undefined) {
+      console.log(props.location.search.split("=")[1]);
+      localStorage.setItem("access_token", props.location.search.split("=")[1]);
+      props.history.push("/home");
+    }
+  });
 
   useEffect(() => {
     fetchLangLong();
@@ -30,7 +39,13 @@ function WeatherPage() {
   const fetchLangLong = async () => {
     try {
       let response = await fetch(
-        `https://shit-weather-app.herokuapp.com/weather/city?city=${query}`
+        `https://shit-weather-app.herokuapp.com/weather/city?city=${query}`,
+        {
+          credentials: "include",
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("access_token"),
+          },
+        }
       );
       let parsedResp = await response.json();
       console.log(parsedResp);
@@ -43,7 +58,13 @@ function WeatherPage() {
   const fetchApi = async () => {
     try {
       let response = await fetch(
-        `https://shit-weather-app.herokuapp.com/weather/geolocation?lat=${locationCoords.lat}&lon=${locationCoords.lon}`
+        `https://shit-weather-app.herokuapp.com/weather/geolocation?lat=${locationCoords.lat}&lon=${locationCoords.lon}`,
+        {
+          credentials: "include",
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("access_token"),
+          },
+        }
       );
       let parsedResp = await response.json();
 
@@ -69,4 +90,4 @@ function WeatherPage() {
   );
 }
 
-export default WeatherPage;
+export default withRouter(HomePage);
