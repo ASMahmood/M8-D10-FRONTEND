@@ -7,7 +7,9 @@ import {
   convertUnixToDate,
 } from "../functions";
 
-export default function TodayWeather(props: apiStructure) {
+type hompageProps = apiStructure & { name?: String };
+
+export default function TodayWeather(props: hompageProps) {
   return (
     <Jumbotron id="todayJumbo" className="mb-3">
       {props.current !== undefined && props.timezone_offset !== undefined && (
@@ -16,8 +18,9 @@ export default function TodayWeather(props: apiStructure) {
             <Row>
               <Col
                 xs={12}
-                className="d-flex align-items-center justify-content-between"
+                className="d-flex align-items-center justify-content-between position-relative"
               >
+                <span id="userNameSpan">Hello, {props.name}</span>
                 <div className="d-flex flex-column align-items-center justify-content-center">
                   <img
                     alt="weather"

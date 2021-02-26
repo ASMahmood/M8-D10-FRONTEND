@@ -10,7 +10,7 @@ import "../style/DailyCard.css";
 
 export default function DailyCard(props: dailyStructure) {
   return (
-    <Card>
+    <Card className="m-2 p-2" style={{ border: "none" }}>
       <div className="dailyTop d-flex align-items-center ">
         <Card.Img
           variant="top"

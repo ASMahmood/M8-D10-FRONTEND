@@ -18,3 +18,24 @@
 .hourCard {
   border-radius: 15px;
 }
+
+#userNameSpan {
+  position: absolute;
+  right: 1rem;
+  top: 0;
+  font-size: 20px;
+}
+
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(255, 255, 255, 0);
+  background-color: #f5f5f500;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  background-color: #f5f5f500;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #0a66c2;
+}

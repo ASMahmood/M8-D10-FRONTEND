@@ -4,7 +4,14 @@ import DailyCard from "./DailyCard";
 
 export default function DailyCol(props: apiStructure) {
   return (
-    <div style={{ overflowY: "scroll", height: "90vh" }}>
+    <div
+      style={{
+        overflowY: "scroll",
+        height: "65vh",
+        border: "1px solid rgba(0, 0, 0, 0.2)",
+        borderRadius: "15px 0px 0px 15px",
+      }}
+    >
       {props.daily !== undefined &&
         props.timezone_offset !== undefined &&
         props.daily

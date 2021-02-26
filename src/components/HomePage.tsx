@@ -5,6 +5,7 @@ import SearchBar from "./SearchBar";
 import TodayWeather from "./TodayWeather";
 import DailyCol from "./DailyCol";
 import HourlyRow from "./HourlyRow";
+import Favourite from "./Favourite";
 import "../style/App.css";
 import { withRouter } from "react-router-dom";
 
@@ -15,6 +16,8 @@ function HomePage(props: any) {
     lon: -0.1257,
   });
   const [query, setQuery] = useState<string>("London");
+  const [name, setName] = useState<string>();
+  const [favs, setFavs] = useState<Array<Object>>([]);
 
   useEffect(() => {
     if (props.location.search !== "") {
@@ -22,10 +25,11 @@ function HomePage(props: any) {
       localStorage.setItem("access_token", props.location.search.split("=")[1]);
       props.history.push("/home");
     }
-  });
+  }, []);
 
   useEffect(() => {
     fetchLangLong();
+    fetchUser();
   }, [query]);
 
   useEffect(() => {
@@ -74,15 +78,38 @@ function HomePage(props: any) {
     }
   };
 
+  const fetchUser = async () => {
+    try {
+      let response = await fetch(
+        `https://shit-weather-app.herokuapp.com/users/homepage/userinfo/help/me`,
+        {
+          credentials: "include",
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("access_token"),
+          },
+        }
+      );
+      let parsedResp = await response.json();
+      setName(parsedResp.name);
+      if (parsedResp.favourites) {
+        setFavs(parsedResp.favourites);
+      }
+      console.log(parsedResp);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <Container fluid id="global-Body" className="mb-4">
       <Row>
         <Col xs={12} lg={8}>
-          <TodayWeather {...apiInfo} />
+          <TodayWeather {...apiInfo} name={name} />
           <HourlyRow {...apiInfo} />
         </Col>
         <Col xs={12} lg={4} id="side-Col">
           <SearchBar search={getInput} />
+          <Favourite />
           <DailyCol {...apiInfo} />
         </Col>
       </Row>
