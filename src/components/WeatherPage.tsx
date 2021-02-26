@@ -1,0 +1,72 @@
+import React, { useState, useEffect } from "react";
+import { Container, Row, Col } from "react-bootstrap";
+import { locCoords, apiStructure } from "../types/interfaces";
+import SearchBar from "./SearchBar";
+import TodayWeather from "./TodayWeather";
+import DailyCol from "./DailyCol";
+import HourlyRow from "./HourlyRow";
+import "./style/App.css";
+
+function WeatherPage() {
+  const [apiInfo, setApiInfo] = useState<apiStructure>();
+  const [locationCoords, setLocationCoords] = useState<locCoords>({
+    lat: 51.5085,
+    lon: -0.1257,
+  });
+  const [query, setQuery] = useState<string>("London");
+
+  useEffect(() => {
+    fetchLangLong();
+  }, [query]);
+
+  useEffect(() => {
+    fetchApi();
+  }, [locationCoords]);
+
+  const getInput = (query: string) => {
+    setQuery(query);
+  };
+
+  const fetchLangLong = async () => {
+    try {
+      let response = await fetch(
+        `https://shit-weather-app.herokuapp.com/weather/city?city=${query}`
+      );
+      let parsedResp = await response.json();
+      console.log(parsedResp);
+      setLocationCoords(parsedResp.coord);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchApi = async () => {
+    try {
+      let response = await fetch(
+        `https://shit-weather-app.herokuapp.com/weather/geolocation?lat=${locationCoords.lat}&lon=${locationCoords.lon}`
+      );
+      let parsedResp = await response.json();
+
+      setApiInfo(parsedResp);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return (
+    <Container fluid id="global-Body" className="mb-4">
+      <Row>
+        <Col xs={12} lg={8}>
+          <TodayWeather {...apiInfo} />
+          <HourlyRow {...apiInfo} />
+        </Col>
+        <Col xs={12} lg={4} id="side-Col">
+          <SearchBar search={getInput} />
+          <DailyCol {...apiInfo} />
+        </Col>
+      </Row>
+    </Container>
+  );
+}
+
+export default WeatherPage;
