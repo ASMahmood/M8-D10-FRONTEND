@@ -17,7 +17,7 @@ function HomePage(props: any) {
   const [query, setQuery] = useState<string>("London");
 
   useEffect(() => {
-    if (props.location.search !== undefined) {
+    if (props.location.search !== "") {
       console.log(props.location.search.split("=")[1]);
       localStorage.setItem("access_token", props.location.search.split("=")[1]);
       props.history.push("/home");
