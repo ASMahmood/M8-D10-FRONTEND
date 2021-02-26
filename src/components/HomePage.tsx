@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import { locCoords, apiStructure } from "../types/interfaces";
+import { locCoords, apiStructure, favsColProps } from "../types/interfaces";
 import SearchBar from "./SearchBar";
 import TodayWeather from "./TodayWeather";
 import DailyCol from "./DailyCol";
@@ -17,7 +17,7 @@ function HomePage(props: any) {
   });
   const [query, setQuery] = useState<string>("London");
   const [name, setName] = useState<string>();
-  const [favs, setFavs] = useState<Array<Object>>([]);
+  const [favs, setFavs] = useState<favsColProps>();
 
   useEffect(() => {
     if (props.location.search !== "") {
@@ -109,7 +109,7 @@ function HomePage(props: any) {
         </Col>
         <Col xs={12} lg={4} id="side-Col">
           <SearchBar search={getInput} />
-          <Favourite />
+          <Favourite {...favs} />
           <DailyCol {...apiInfo} />
         </Col>
       </Row>
