@@ -104,5 +104,7 @@ export interface hourlyStructure {
 [];
 
 export interface favsColProps {
-  favs?: [{ name: String; lan: Number; lon: Number }];
+  name?: String;
+  lat?: Number;
+  lon?: Number;
 }

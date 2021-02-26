@@ -17,7 +17,7 @@ function HomePage(props: any) {
   });
   const [query, setQuery] = useState<string>("London");
   const [name, setName] = useState<string>();
-  const [favs, setFavs] = useState<favsColProps>();
+  const [favs, setFavs] = useState<Array<favsColProps>>([]);
 
   useEffect(() => {
     if (props.location.search !== "") {
@@ -36,14 +36,22 @@ function HomePage(props: any) {
     fetchApi();
   }, [locationCoords]);
 
+  useEffect(() => {
+    addToFavourites();
+  }, [favs]);
+
   const getInput = (query: string) => {
     setQuery(query);
+  };
+  const addFav = (newFav: favsColProps) => {
+    let newArr: Array<favsColProps> = favs.concat(newFav);
+    setFavs(newArr);
   };
 
   const fetchLangLong = async () => {
     try {
       let response = await fetch(
-        `https://shit-weather-app.herokuapp.com/weather/city?city=${query}`,
+        `${process.env.REACT_APP_BE_URL}/weather/city?city=${query}`,
         {
           credentials: "include",
           headers: {
@@ -62,7 +70,7 @@ function HomePage(props: any) {
   const fetchApi = async () => {
     try {
       let response = await fetch(
-        `https://shit-weather-app.herokuapp.com/weather/geolocation?lat=${locationCoords.lat}&lon=${locationCoords.lon}`,
+        `${process.env.REACT_APP_BE_URL}/weather/geolocation?lat=${locationCoords.lat}&lon=${locationCoords.lon}`,
         {
           credentials: "include",
           headers: {
@@ -81,7 +89,7 @@ function HomePage(props: any) {
   const fetchUser = async () => {
     try {
       let response = await fetch(
-        `https://shit-weather-app.herokuapp.com/users/homepage/userinfo/help/me`,
+        `${process.env.REACT_APP_BE_URL}/users/homepage/userinfo/help/me`,
         {
           credentials: "include",
           headers: {
@@ -100,11 +108,32 @@ function HomePage(props: any) {
     }
   };
 
+  const addToFavourites = async () => {
+    try {
+      let response = await fetch(
+        `${process.env.REACT_APP_BE_URL}/users/favourites/add`,
+        {
+          method: "PUT",
+          body: JSON.stringify(favs),
+          credentials: "include",
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("access_token"),
+            "Content-type": "application/json",
+          },
+        }
+      );
+      let parsedResp = await response.json();
+      console.log(parsedResp);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <Container fluid id="global-Body" className="mb-4">
       <Row>
         <Col xs={12} lg={8}>
-          <TodayWeather {...apiInfo} name={name} />
+          <TodayWeather {...apiInfo} name={name} addFav={addFav} />
           <HourlyRow {...apiInfo} />
         </Col>
         <Col xs={12} lg={4} id="side-Col">

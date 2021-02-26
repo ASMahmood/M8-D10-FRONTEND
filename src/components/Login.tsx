@@ -12,7 +12,7 @@ function Login() {
           <Form></Form>
         </Col>
         <Col xs={12}>
-          <a href="https://shit-weather-app.herokuapp.com/users/3rdParty/google">
+          <a href={process.env.REACT_APP_BE_URL + `/users/3rdParty/google`}>
             <Button className="signup-btn google my-2 w-100">
               CONTINUE WITH GOOGLE
             </Button>

@@ -1,13 +1,17 @@
 import React from "react";
 import { Jumbotron, Row, Col, Container } from "react-bootstrap";
-import { apiStructure } from "../types/interfaces";
+import { apiStructure, favsColProps, locCoords } from "../types/interfaces";
+import { AiOutlineStar } from "react-icons/ai";
 import {
   convertUnixToReadble,
   kelvinToCelsius,
   convertUnixToDate,
 } from "../functions";
 
-type hompageProps = apiStructure & { name?: String };
+type hompageProps = apiStructure &
+  locCoords & { name?: String } & {
+    addFav: (newFav: favsColProps) => void;
+  };
 
 export default function TodayWeather(props: hompageProps) {
   return (
@@ -20,7 +24,9 @@ export default function TodayWeather(props: hompageProps) {
                 xs={12}
                 className="d-flex align-items-center justify-content-between position-relative"
               >
-                <span id="userNameSpan">Hello, {props.name}</span>
+                <span id="userNameSpan" className="align-items-center d-flex">
+                  Hello, {props.name}
+                </span>
                 <div className="d-flex flex-column align-items-center justify-content-center">
                   <img
                     alt="weather"
@@ -30,8 +36,18 @@ export default function TodayWeather(props: hompageProps) {
                     {props.current.weather[0].description.toUpperCase()}
                   </span>
                 </div>
-                <h1>
-                  {kelvinToCelsius(props.current.temp)}°C - {props.timezone} -{" "}
+                <h1 className="align-items-center d-flex">
+                  {kelvinToCelsius(props.current.temp)}°C - {props.timezone}{" "}
+                  <AiOutlineStar
+                    onClick={() => {
+                      props.addFav({
+                        name: props.timezone,
+                        lat: props.lat,
+                        lon: props.lon,
+                      });
+                    }}
+                  />{" "}
+                  -{" "}
                   {convertUnixToReadble(
                     props.current.dt + props.timezone_offset
                   )}{" "}
