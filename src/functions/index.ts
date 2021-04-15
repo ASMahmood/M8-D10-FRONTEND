@@ -1,6 +1,6 @@
 export const convertUnixToReadble = (time: number): string => {
   let date = new Date(time * 1000); //CONVERT UNIX FROM SECONDS TO MILLISECONDS
-  let hours = date.getHours();
+  let hours = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
   let minutes = "0" + date.getMinutes();
   let formattedTime = hours + ":" + minutes.substr(-2);
   return formattedTime;

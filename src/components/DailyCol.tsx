@@ -1,8 +1,13 @@
 import React from "react";
-import { dailyStructure, apiStructure } from "../types/interfaces";
+import { dailyStructure, apiStructure, reduxStore } from "../types/interfaces";
+import { useSelector } from "react-redux";
 import DailyCard from "./DailyCard";
 
-export default function DailyCol(props: apiStructure) {
+export default function DailyCol() {
+  const dailyArray = useSelector((state: reduxStore) => state.forecast.daily);
+  const timezoneOffset = useSelector(
+    (state: reduxStore) => state.forecast.timezone_offset
+  );
   return (
     <div
       style={{
@@ -12,20 +17,15 @@ export default function DailyCol(props: apiStructure) {
         borderRadius: "15px 0px 0px 15px",
       }}
     >
-      {props.daily !== undefined &&
-        props.timezone_offset !== undefined &&
-        props.daily
+      {dailyArray.length > 0 &&
+        dailyArray
           .slice(1)
           .map((day, index) => (
             <DailyCard
               key={index}
               index={index}
               {...day}
-              timezone_offset={
-                props.timezone_offset !== undefined
-                  ? props.timezone_offset + 1
-                  : 0
-              }
+              timezone_offset={timezoneOffset}
             />
           ))}
     </div>

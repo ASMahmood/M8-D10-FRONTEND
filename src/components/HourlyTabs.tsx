@@ -1,6 +1,7 @@
 import React from "react";
 import { Card, Row, Col } from "react-bootstrap";
-import { hourlyStructure } from "../types/interfaces";
+import { hourlyStructure, reduxStore } from "../types/interfaces";
+import { useSelector } from "react-redux";
 import {
   convertUnixToReadble,
   kelvinToCelsius,
@@ -8,6 +9,9 @@ import {
 } from "../functions";
 
 export default function HourlyTabs(props: hourlyStructure) {
+  const timezoneOffset = useSelector(
+    (state: reduxStore) => state.forecast.timezone_offset
+  );
   return (
     <div className="dailyTop d-flex align-items-center ">
       <Card.Img
@@ -17,7 +21,8 @@ export default function HourlyTabs(props: hourlyStructure) {
       />
 
       <h5 className="ml-3">
-        {convertUnixToReadble(props.dt)} - {convertUnixToDate(props.dt)}
+        {convertUnixToReadble(props.dt + timezoneOffset)} -{" "}
+        {convertUnixToDate(props.dt)}
       </h5>
       <h5 className="ml-4">{kelvinToCelsius(props.temp)}°C</h5>
       <h5 className="ml-3">{props.weather[0].main.toUpperCase()}</h5>

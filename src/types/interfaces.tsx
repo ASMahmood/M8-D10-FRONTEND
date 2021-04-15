@@ -95,7 +95,6 @@ export interface hourlyStructure {
   wind_speed: number;
   uvi: number;
   pop: number;
-  timezone_offset: number;
   weather: {
     icon: string;
     main: string;
@@ -104,7 +103,95 @@ export interface hourlyStructure {
 [];
 
 export interface favsColProps {
-  name?: String;
-  lat?: Number;
-  lon?: Number;
+  name?: string;
+  lat?: number;
+  lon?: number;
+}
+
+export interface reduxStore {
+  error: {
+    message: string;
+    code: number;
+    severity: string;
+  };
+  user: {
+    name: string;
+    favourites: [
+      {
+        name: string;
+        lat: number;
+        lon: number;
+      }
+    ];
+  };
+  util: {
+    loading: boolean;
+    currentHour: number;
+  };
+  forecast: {
+    current: {
+      dt: number;
+      clouds: number;
+      humidity: number;
+      sunrise: number;
+      sunset: number;
+      temp: number;
+      visibility: number;
+      wind_deg: number;
+      wind_speed: number;
+      weather: [
+        {
+          description: string;
+          main: string;
+          icon: string;
+        }
+      ];
+    };
+    daily: [
+      {
+        clouds: number;
+        dt: number;
+        humidity: number;
+        sunrise: number;
+        sunset: number;
+        wind_deg: number;
+        wind_speed: number;
+        weather: [
+          {
+            description: string;
+            main: string;
+            icon: string;
+          }
+        ];
+        temp: {
+          day: number;
+          eve: number;
+          max: number;
+          min: number;
+          morn: number;
+          night: number;
+        };
+      }
+    ];
+    hourly: [
+      {
+        clouds: number;
+        dt: number;
+        humidity: number;
+        temp: number;
+        wind_deg: number;
+        wind_speed: number;
+        uvi: number;
+        pop: number;
+        weather: [
+          {
+            icon: string;
+            main: string;
+          }
+        ];
+      }
+    ];
+    timezone: string;
+    timezone_offset: number;
+  };
 }

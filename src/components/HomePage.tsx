@@ -8,8 +8,10 @@ import HourlyRow from "./HourlyRow";
 import Favourite from "./Favourite";
 import "../style/App.css";
 import { withRouter } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 function HomePage(props: any) {
+  const dispatch = useDispatch();
   const [apiInfo, setApiInfo] = useState<apiStructure>();
   const [locationCoords, setLocationCoords] = useState<locCoords>({
     lat: 51.5085,
@@ -79,7 +81,7 @@ function HomePage(props: any) {
         }
       );
       let parsedResp = await response.json();
-
+      dispatch({ type: "POPULATE_FORECAST", payload: parsedResp });
       setApiInfo(parsedResp);
     } catch (error) {
       console.log(error);
@@ -98,6 +100,7 @@ function HomePage(props: any) {
         }
       );
       let parsedResp = await response.json();
+      console.log(parsedResp);
       setName(parsedResp.name);
       if (parsedResp.favourites) {
         setFavs(parsedResp.favourites);
@@ -134,12 +137,12 @@ function HomePage(props: any) {
       <Row>
         <Col xs={12} lg={8} className="h-100">
           <TodayWeather {...apiInfo} name={name} addFav={addFav} />
-          <HourlyRow {...apiInfo} />
+          <HourlyRow />
         </Col>
         <Col xs={12} lg={4} id="side-Col">
           <SearchBar search={getInput} />
           <Favourite {...favs} />
-          <DailyCol {...apiInfo} />
+          <DailyCol />
         </Col>
       </Row>
     </Container>
