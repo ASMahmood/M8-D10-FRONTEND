@@ -9,7 +9,7 @@ import {
 
 export default function HourlyTabs(props: hourlyStructure) {
   return (
-    <div className="dailyTop d-flex align-items-center ">
+    <div className="dailyTop d-flex align-items-center">
       <Card.Img
         variant="top"
         className="img-flid hourImg"

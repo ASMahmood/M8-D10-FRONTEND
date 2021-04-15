@@ -10,7 +10,7 @@ import "../style/HourlyCard.css";
 
 export default function HourlyCard(props: hourlyStructure) {
   return (
-    <Card className="hourCard">
+    <Card className="hourCard h-100">
       <div className="dailyTop d-flex align-items-center ">
         <Card.Img
           variant="top"

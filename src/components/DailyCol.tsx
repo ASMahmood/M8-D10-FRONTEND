@@ -7,7 +7,7 @@ export default function DailyCol(props: apiStructure) {
     <div
       style={{
         overflowY: "scroll",
-        height: "65vh",
+        height: "60vh",
         border: "1px solid rgba(0, 0, 0, 0.2)",
         borderRadius: "15px 0px 0px 15px",
       }}

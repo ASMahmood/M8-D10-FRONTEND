@@ -1,16 +1,26 @@
+body {
+  height: 100vh;
+}
+#root {
+  height: 100%;
+}
 #global-Body {
   padding-top: 5vh;
   padding-right: 5vw;
   padding-left: 5vw;
+  padding-bottom: 5vh;
   position: relative;
   font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  height: 100%;
 }
 #side-Col {
   width: 30vw;
+  height: 100%;
 }
 
 #todayJumbo {
   background-color: rgba(77, 169, 250, 0.767);
+  height: 40vh;
 }
 
 .hourCard {
@@ -22,6 +32,15 @@
   right: 1rem;
   top: 0;
   font-size: 20px;
+}
+
+#actualHourRow {
+  height: 45vh;
+}
+
+.hourTitle {
+  height: 5vh;
+  margin: 0;
 }
 
 ::-webkit-scrollbar-track {

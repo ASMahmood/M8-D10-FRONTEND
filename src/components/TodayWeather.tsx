@@ -15,7 +15,7 @@ type hompageProps = apiStructure &
 
 export default function TodayWeather(props: hompageProps) {
   return (
-    <Jumbotron id="todayJumbo" className="mb-3">
+    <Jumbotron id="todayJumbo" className="mb-0">
       {props.current !== undefined && props.timezone_offset !== undefined && (
         <>
           <Container fluid>

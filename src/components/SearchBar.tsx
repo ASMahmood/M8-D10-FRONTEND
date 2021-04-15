@@ -15,7 +15,7 @@ export default function SearchBar(props: Props) {
   };
 
   return (
-    <Form onSubmit={handleSubmit} className="w-100">
+    <Form onSubmit={handleSubmit} className="w-100" style={{ height: "5vh" }}>
       <Form.Group className="d-flex">
         <Form.Control
           type="text"
