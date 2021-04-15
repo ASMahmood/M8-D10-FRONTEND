@@ -132,7 +132,7 @@ function HomePage(props: any) {
   return (
     <Container fluid id="global-Body" className="mb-4">
       <Row>
-        <Col xs={12} lg={8}>
+        <Col xs={12} lg={8} className="h-100">
           <TodayWeather {...apiInfo} name={name} addFav={addFav} />
           <HourlyRow {...apiInfo} />
         </Col>

@@ -1,22 +1,32 @@
 import React from "react";
 import { apiStructure } from "../types/interfaces";
-import { Carousel, Row, Col } from "react-bootstrap";
-import OwlCarousel from "react-owl-carousel";
-import "owl.carousel/dist/assets/owl.carousel.css";
-import "owl.carousel/dist/assets/owl.theme.default.css";
+import { Carousel, Row, Col, Card } from "react-bootstrap";
 import HourlyCard from "./HourlyCard";
-import CarouselHourBlock from "./CarouselHourBlock";
+import HourlyTabs from "./HourlyTabs";
 
 export default function HourlyRow(props: apiStructure) {
-  let blocks = [0, 1, 2, 3, 4, 5, 6, 7];
   return (
     <div id="hourRow">
       <h4 className="ml-2">Next 24 hours:</h4>
       {props.hourly !== undefined && props.timezone_offset !== undefined && (
         <Row>
-          {console.log(props.timezone_offset)}
-          {props.hourly.slice(0, 24).map((hour, index) => (
-            <Col xs={4} className="mt-3">
+          <Col xs={4} className="mt-3 h-100">
+            <Card className="hourCard h-100">
+              {props.hourly.slice(0, 8).map((hour, index) => (
+                <HourlyTabs
+                  key={index}
+                  {...hour}
+                  timezone_offset={
+                    props.timezone_offset !== undefined
+                      ? props.timezone_offset + 1
+                      : 0
+                  }
+                />
+              ))}
+            </Card>
+          </Col>
+          <Col xs={4} className="mt-3">
+            {props.hourly.slice(0, 1).map((hour, index) => (
               <HourlyCard
                 key={index}
                 {...hour}
@@ -26,30 +36,10 @@ export default function HourlyRow(props: apiStructure) {
                     : 0
                 }
               />
-            </Col>
-          ))}
+            ))}
+          </Col>
         </Row>
       )}
-      {/* {props.hourly !== undefined && (
-        <Carousel>
-          {blocks.map(
-            (i) =>
-              props.hourly !== undefined && (
-                <Carousel.Item key={i}>
-                  <CarouselHourBlock hourly={props.hourly.slice(i * 3, 3)} />{" "}
-                </Carousel.Item>
-              )
-          )}
-        </Carousel>
-      )} */}
-
-      {/* {props.hourly !== undefined && (
-        <OwlCarousel margin={10} className="owl-theme">
-          {props.hourly.slice(0, 24).map((hour, index) => (
-            <HourlyCard key={index} {...hour} />
-          ))}
-        </OwlCarousel>
-      )} */}
     </div>
   );
 }
