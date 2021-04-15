@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, Row, Col } from "react-bootstrap";
 import { hourlyStructure, reduxStore } from "../types/interfaces";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import {
   convertUnixToReadble,
   kelvinToCelsius,
@@ -12,8 +12,12 @@ export default function HourlyTabs(props: hourlyStructure) {
   const timezoneOffset = useSelector(
     (state: reduxStore) => state.forecast.timezone_offset
   );
+  const dispatch = useDispatch();
   return (
-    <div className="dailyTop d-flex align-items-center ">
+    <div
+      className="dailyTop d-flex align-items-center hourTab"
+      onClick={() => dispatch({ type: "SWITCH_CURRENT", payload: props.index })}
+    >
       <Card.Img
         variant="top"
         className="img-flid hourImg"

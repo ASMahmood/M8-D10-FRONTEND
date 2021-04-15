@@ -15,7 +15,7 @@ export default function HourlyCard(props: hourlyStructure) {
   );
   return (
     <Card className="hourCard h-100">
-      <div className="dailyTop d-flex align-items-center ">
+      <div className="dailyTop d-flex align-items-center justify-content-center">
         <Card.Img
           variant="top"
           className="img-flid hourImg"

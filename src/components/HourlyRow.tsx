@@ -18,7 +18,7 @@ export default function HourlyRow() {
           <Col xs={6} className="h-100">
             <Card className="hourSelector h-100">
               {hourArray.slice(0, 24).map((hour, index) => (
-                <HourlyTabs key={index} {...hour} />
+                <HourlyTabs index={index} {...hour} />
               ))}
             </Card>
           </Col>
@@ -26,7 +26,7 @@ export default function HourlyRow() {
             {hourArray
               .slice(currentHour, currentHour + 1)
               .map((hour, index) => (
-                <HourlyCard key={index} {...hour} />
+                <HourlyCard index={index} {...hour} />
               ))}
           </Col>
         </Row>

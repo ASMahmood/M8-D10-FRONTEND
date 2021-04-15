@@ -87,6 +87,7 @@ export interface dailyStructure {
 [];
 
 export interface hourlyStructure {
+  index: number;
   clouds: number;
   dt: number;
   humidity: number;
