@@ -23,6 +23,11 @@ body {
   height: 40vh;
 }
 
+.hourSelector {
+  border-radius: 15px 0px 0px 15px;
+  overflow-y: scroll;
+}
+
 .hourCard {
   border-radius: 15px;
 }

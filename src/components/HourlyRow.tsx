@@ -11,8 +11,8 @@ export default function HourlyRow(props: apiStructure) {
       {props.hourly !== undefined && props.timezone_offset !== undefined && (
         <Row id="actualHourRow">
           <Col xs={6} className="h-100">
-            <Card className="hourCard h-100">
-              {props.hourly.slice(0, 8).map((hour, index) => (
+            <Card className="hourSelector h-100">
+              {props.hourly.slice(0, 24).map((hour, index) => (
                 <HourlyTabs
                   key={index}
                   {...hour}
