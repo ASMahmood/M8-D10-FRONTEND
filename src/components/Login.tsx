@@ -148,7 +148,13 @@ function Login(props: RouteComponentProps) {
               </Form.Row>
               <Form.Group>
                 <Form.Label htmlFor="nameInput">Name:</Form.Label>
-                <Form.Control id="nameInput" />
+                <Form.Control
+                  id="nameInput"
+                  required
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.currentTarget.value)}
+                />
               </Form.Group>
               <Button className="signup-btn ml-auto" type="submit">
                 <AiOutlineLogin color="black" />
