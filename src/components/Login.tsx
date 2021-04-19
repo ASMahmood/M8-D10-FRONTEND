@@ -16,6 +16,7 @@ import { RouteComponentProps } from "react-router-dom";
 function Login(props: RouteComponentProps) {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [confirmPassword, setPassword2] = useState<string>("");
   const [name, setName] = useState<string>("");
   const [register, setRegister] = useState<boolean>(false);
   const [validated, setValidated] = useState<boolean>(false);
@@ -26,8 +27,11 @@ function Login(props: RouteComponentProps) {
     if (form.checkValidity() === false) {
       e.stopPropagation(); //STOPS CODE HERE
     } else {
-      loginUser();
-      //LOGIN FUNC
+      if (register) {
+        loginUser();
+        //LOGIN FUNC
+      } else {
+      }
     }
     setValidated(true);
   };
@@ -106,13 +110,25 @@ function Login(props: RouteComponentProps) {
             >
               <Form.Group>
                 <Form.Label htmlFor="emailInput">Email:</Form.Label>
-                <Form.Control id="emailInput" />
+                <Form.Control
+                  id="emailInput"
+                  required
+                  type="text"
+                  value={email}
+                  onChange={(e) => setEmail(e.currentTarget.value)}
+                />
               </Form.Group>
               <Form.Row>
                 <Col xs={6}>
                   <Form.Group>
                     <Form.Label htmlFor="passwordInput">Password:</Form.Label>
-                    <Form.Control id="passwordInput" />
+                    <Form.Control
+                      required
+                      id="passwordInput"
+                      type="password"
+                      value={password}
+                      onChange={(e) => setPassword(e.currentTarget.value)}
+                    />
                   </Form.Group>
                 </Col>
                 <Col xs={6}>
@@ -120,7 +136,13 @@ function Login(props: RouteComponentProps) {
                     <Form.Label htmlFor="password2Input">
                       Confirm Password:
                     </Form.Label>
-                    <Form.Control id="password2Input" />
+                    <Form.Control
+                      required
+                      id="password2Input"
+                      type="password"
+                      value={confirmPassword}
+                      onChange={(e) => setPassword2(e.currentTarget.value)}
+                    />
                   </Form.Group>
                 </Col>
               </Form.Row>
