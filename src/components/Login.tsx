@@ -10,8 +10,10 @@ import {
 } from "react-bootstrap";
 import { FcGoogle } from "react-icons/fc";
 import { AiOutlineLogin, AiOutlineUserAdd } from "react-icons/ai";
+import toast, { Toaster } from "react-hot-toast";
+import { RouteComponentProps } from "react-router-dom";
 
-function Login() {
+function Login(props: RouteComponentProps) {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [name, setName] = useState<string>("");
@@ -45,6 +47,23 @@ function Login() {
       );
       let parsedResp = await response.json();
       console.log(parsedResp);
+      if (parsedResp.message === "No User Found") {
+        toast.error("Incorrect Credentials", {
+          style: {
+            border: "1px solid #000",
+            padding: "16px",
+            color: "#000",
+          },
+          iconTheme: {
+            primary: "#000",
+            secondary: "#FFFAEE",
+          },
+        });
+        setValidated(false);
+      } else {
+        await localStorage.setItem("access_token", parsedResp.token);
+        props.history.push("/home");
+      }
     } catch (error) {
       console.log(error);
     }
@@ -52,6 +71,9 @@ function Login() {
 
   return (
     <Container id="global-Body" className="mb-4 loginPage">
+      <div>
+        <Toaster />
+      </div>
       <Row>
         <Col xs={{ span: "6", offset: "2" }}>
           <h2>Welcome to Weather App</h2>
