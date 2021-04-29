@@ -27,13 +27,63 @@ function Login(props: RouteComponentProps) {
     if (form.checkValidity() === false) {
       e.stopPropagation(); //STOPS CODE HERE
     } else {
-      if (register) {
+      if (!register) {
         loginUser();
         //LOGIN FUNC
       } else {
+        registerUser();
       }
     }
     setValidated(true);
+  };
+
+  const registerUser = async () => {
+    try {
+      let response = await fetch(
+        `${process.env.REACT_APP_BE_URL}/users/register`,
+        {
+          method: "POST",
+          body: JSON.stringify({
+            email: email,
+            password: password,
+            name: name,
+          }),
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      let parsedResp = await response.json();
+      console.log(parsedResp);
+      if (parsedResp.userId) {
+        toast.success("User Registered!", {
+          style: {
+            border: "1px solid #000",
+            padding: "16px",
+            color: "#000",
+          },
+          iconTheme: {
+            primary: "#000",
+            secondary: "#FFFAEE",
+          },
+        });
+        setRegister(false);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Somethings gone wrong!", {
+        style: {
+          border: "1px solid #000",
+          padding: "16px",
+          color: "#000",
+        },
+        iconTheme: {
+          primary: "#000",
+          secondary: "#FFFAEE",
+        },
+      });
+    }
   };
 
   const loginUser = async () => {
@@ -70,6 +120,17 @@ function Login(props: RouteComponentProps) {
       }
     } catch (error) {
       console.log(error);
+      toast.error("Somethings gone wrong!", {
+        style: {
+          border: "1px solid #000",
+          padding: "16px",
+          color: "#000",
+        },
+        iconTheme: {
+          primary: "#000",
+          secondary: "#FFFAEE",
+        },
+      });
     }
   };
 
@@ -118,34 +179,18 @@ function Login(props: RouteComponentProps) {
                   onChange={(e) => setEmail(e.currentTarget.value)}
                 />
               </Form.Group>
-              <Form.Row>
-                <Col xs={6}>
-                  <Form.Group>
-                    <Form.Label htmlFor="passwordInput">Password:</Form.Label>
-                    <Form.Control
-                      required
-                      id="passwordInput"
-                      type="password"
-                      value={password}
-                      onChange={(e) => setPassword(e.currentTarget.value)}
-                    />
-                  </Form.Group>
-                </Col>
-                <Col xs={6}>
-                  <Form.Group>
-                    <Form.Label htmlFor="password2Input">
-                      Confirm Password:
-                    </Form.Label>
-                    <Form.Control
-                      required
-                      id="password2Input"
-                      type="password"
-                      value={confirmPassword}
-                      onChange={(e) => setPassword2(e.currentTarget.value)}
-                    />
-                  </Form.Group>
-                </Col>
-              </Form.Row>
+
+              <Form.Group>
+                <Form.Label htmlFor="passwordInput">Password:</Form.Label>
+                <Form.Control
+                  required
+                  id="passwordInput"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.currentTarget.value)}
+                />
+              </Form.Group>
+
               <Form.Group>
                 <Form.Label htmlFor="nameInput">Name:</Form.Label>
                 <Form.Control
