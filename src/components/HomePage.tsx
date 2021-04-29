@@ -1,25 +1,29 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import { locCoords, apiStructure, favsColProps } from "../types/interfaces";
+import {
+  locCoords,
+  apiStructure,
+  favsColProps,
+  reduxStore,
+} from "../types/interfaces";
 import SearchBar from "./SearchBar";
 import TodayWeather from "./TodayWeather";
 import DailyCol from "./DailyCol";
 import HourlyRow from "./HourlyRow";
 import Favourite from "./Favourite";
 import "../style/App.css";
-import { withRouter } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { withRouter, RouteComponentProps } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
-function HomePage(props: any) {
+function HomePage(props: RouteComponentProps) {
   const dispatch = useDispatch();
+  const name = useSelector((state: reduxStore) => state.user.name);
   const [apiInfo, setApiInfo] = useState<apiStructure>();
   const [locationCoords, setLocationCoords] = useState<locCoords>({
     lat: 51.5085,
     lon: -0.1257,
   });
   const [query, setQuery] = useState<string>("London");
-  const [name, setName] = useState<string>();
-  const [favs, setFavs] = useState<Array<favsColProps>>([]);
 
   useEffect(() => {
     if (props.location.search !== "") {
@@ -38,16 +42,11 @@ function HomePage(props: any) {
     fetchApi();
   }, [locationCoords]);
 
-  useEffect(() => {
-    addToFavourites();
-  }, [favs]);
-
   const getInput = (query: string) => {
     setQuery(query);
   };
   const addFav = (newFav: favsColProps) => {
-    let newArr: Array<favsColProps> = favs.concat(newFav);
-    setFavs(newArr);
+    console.log("hey");
   };
 
   const fetchLangLong = async () => {
@@ -100,12 +99,7 @@ function HomePage(props: any) {
         }
       );
       let parsedResp = await response.json();
-      console.log(parsedResp);
-      setName(parsedResp.name);
-      if (parsedResp.favourites) {
-        setFavs(parsedResp.favourites);
-      }
-      console.log(parsedResp);
+      dispatch({ type: "POPULATE_USER", payload: parsedResp });
     } catch (error) {
       console.log(error);
     }
@@ -117,7 +111,7 @@ function HomePage(props: any) {
         `${process.env.REACT_APP_BE_URL}/users/favourites/add`,
         {
           method: "PUT",
-          body: JSON.stringify(favs),
+          body: JSON.stringify("favs"),
           credentials: "include",
           headers: {
             Authorization: "Bearer " + localStorage.getItem("access_token"),
@@ -141,7 +135,7 @@ function HomePage(props: any) {
         </Col>
         <Col xs={12} lg={4} id="side-Col">
           <SearchBar search={getInput} />
-          <Favourite {...favs} />
+          <Favourite />
           <DailyCol />
         </Col>
       </Row>

@@ -2,7 +2,7 @@ import React from "react";
 
 import { favsColProps } from "../types/interfaces";
 
-function Favourite(props: Array<favsColProps>) {
+function Favourite() {
   return <div style={{ overflowY: "scroll", height: "25vh" }}></div>;
 }
 
