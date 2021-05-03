@@ -130,7 +130,7 @@ function HomePage(props: RouteComponentProps) {
     <Container fluid id="global-Body">
       <Row>
         <Col xs={12} lg={8} className="h-100">
-          <TodayWeather {...apiInfo} name={name} addFav={addFav} />
+          <TodayWeather {...apiInfo} name={name} />
           <HourlyRow />
         </Col>
         <Col xs={12} lg={4} id="side-Col">

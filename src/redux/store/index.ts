@@ -21,13 +21,7 @@ export const initalState = {
   },
   user: {
     name: "",
-    favourites: [
-      {
-        name: "",
-        lat: 0,
-        lon: 0,
-      },
-    ],
+    favourites: [],
   },
   util: {
     loading: false,

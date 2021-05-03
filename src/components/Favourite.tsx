@@ -1,9 +1,26 @@
 import React from "react";
-
-import { favsColProps } from "../types/interfaces";
+import { favsColProps, reduxStore } from "../types/interfaces";
+import { useSelector } from "react-redux";
 
 function Favourite() {
-  return <div style={{ overflowY: "scroll", height: "25vh" }}></div>;
+  const favsArray = useSelector((state: reduxStore) => state.user.favourites);
+  return (
+    <div
+      style={{
+        overflowY: "scroll",
+        height: "24vh",
+        border: "1px solid rgba(0, 0, 0, 0.2)",
+        borderRadius: "15px 0px 0px 15px",
+        marginBottom: "1vh",
+      }}
+    >
+      {favsArray.length > 0 ? (
+        favsArray.map((fav, i) => <h5>{fav.name}</h5>)
+      ) : (
+        <h1>No Favourites</h1>
+      )}
+    </div>
+  );
 }
 
 export default Favourite;

@@ -8,10 +8,7 @@ import {
   convertUnixToDate,
 } from "../functions";
 
-type hompageProps = apiStructure &
-  locCoords & { name?: String } & {
-    addFav: (newFav: favsColProps) => void;
-  };
+type hompageProps = apiStructure & locCoords & { name?: String };
 
 export default function TodayWeather(props: hompageProps) {
   return (
@@ -38,16 +35,7 @@ export default function TodayWeather(props: hompageProps) {
                 </div>
                 <h1 className="align-items-center d-flex">
                   {kelvinToCelsius(props.current.temp)}°C - {props.timezone}{" "}
-                  <AiOutlineStar
-                    onClick={() => {
-                      props.addFav({
-                        name: props.timezone,
-                        lat: props.lat,
-                        lon: props.lon,
-                      });
-                    }}
-                  />{" "}
-                  -{" "}
+                  <AiOutlineStar onClick={() => {}} /> -{" "}
                   {convertUnixToReadble(
                     props.current.dt + props.timezone_offset
                   )}{" "}
