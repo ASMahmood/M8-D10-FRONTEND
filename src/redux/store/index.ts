@@ -26,6 +26,8 @@ export const initalState = {
   util: {
     loading: false,
     currentHour: 0,
+    city: "",
+    country: "",
   },
   forecast: {
     current: {
@@ -92,6 +94,8 @@ export const initalState = {
     ],
     timezone: "",
     timezone_offset: 0,
+    lat: 0,
+    lon: 0,
   },
 };
 

@@ -14,15 +14,10 @@ import Favourite from "./Favourite";
 import "../style/App.css";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { fetchUser, fetchCoordinates, fetchForecast } from "../functions/api";
 
 function HomePage(props: RouteComponentProps) {
   const dispatch = useDispatch();
-  const name = useSelector((state: reduxStore) => state.user.name);
-  const [apiInfo, setApiInfo] = useState<apiStructure>();
-  const [locationCoords, setLocationCoords] = useState<locCoords>({
-    lat: 51.5085,
-    lon: -0.1257,
-  });
   const [query, setQuery] = useState<string>("London");
 
   useEffect(() => {
@@ -35,92 +30,37 @@ function HomePage(props: RouteComponentProps) {
 
   useEffect(() => {
     fetchLangLong();
-    fetchUser();
+    populateUser();
   }, [query]);
-
-  useEffect(() => {
-    fetchApi();
-  }, [locationCoords]);
 
   const getInput = (query: string) => {
     setQuery(query);
   };
-  const addFav = (newFav: favsColProps) => {
-    console.log("hey");
-  };
 
   const fetchLangLong = async () => {
     try {
-      let response = await fetch(
-        `${process.env.REACT_APP_BE_URL}/weather/city?city=${query}`,
-        {
-          credentials: "include",
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("access_token"),
-          },
-        }
-      );
-      let parsedResp = await response.json();
-      console.log(parsedResp);
-      setLocationCoords(parsedResp.coord);
+      let coordinates = await fetchCoordinates(query);
+      dispatch({ type: "ADD_CITY", payload: coordinates.name });
+      dispatch({ type: "ADD_COUNTRY", payload: coordinates.sys.country });
+      fetchApi(coordinates.coord);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const fetchApi = async () => {
+  const fetchApi = async (coords: locCoords) => {
     try {
-      let response = await fetch(
-        `${process.env.REACT_APP_BE_URL}/weather/geolocation?lat=${locationCoords.lat}&lon=${locationCoords.lon}`,
-        {
-          credentials: "include",
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("access_token"),
-          },
-        }
-      );
-      let parsedResp = await response.json();
-      dispatch({ type: "POPULATE_FORECAST", payload: parsedResp });
-      setApiInfo(parsedResp);
+      let forecast = await fetchForecast(coords.lat, coords.lon);
+      dispatch({ type: "POPULATE_FORECAST", payload: forecast });
     } catch (error) {
       console.log(error);
     }
   };
 
-  const fetchUser = async () => {
+  const populateUser = async () => {
     try {
-      let response = await fetch(
-        `${process.env.REACT_APP_BE_URL}/users/homepage/userinfo/help/me`,
-        {
-          credentials: "include",
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("access_token"),
-          },
-        }
-      );
-      let parsedResp = await response.json();
-      dispatch({ type: "POPULATE_USER", payload: parsedResp });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const addToFavourites = async () => {
-    try {
-      let response = await fetch(
-        `${process.env.REACT_APP_BE_URL}/users/favourites/add`,
-        {
-          method: "PUT",
-          body: JSON.stringify("favs"),
-          credentials: "include",
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("access_token"),
-            "Content-type": "application/json",
-          },
-        }
-      );
-      let parsedResp = await response.json();
-      console.log(parsedResp);
+      let userInfo = await fetchUser();
+      dispatch({ type: "POPULATE_USER", payload: userInfo });
     } catch (error) {
       console.log(error);
     }
@@ -130,7 +70,7 @@ function HomePage(props: RouteComponentProps) {
     <Container fluid id="global-Body">
       <Row>
         <Col xs={12} lg={8} className="h-100">
-          <TodayWeather {...apiInfo} name={name} />
+          <TodayWeather />
           <HourlyRow />
         </Col>
         <Col xs={12} lg={4} id="side-Col">

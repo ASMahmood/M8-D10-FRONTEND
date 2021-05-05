@@ -17,7 +17,7 @@ function Favourite() {
       {favsArray.length > 0 ? (
         favsArray.map((fav, i) => <h5>{fav.name}</h5>)
       ) : (
-        <h1>No Favourites</h1>
+        <h3 className="w-100 h-100 text-center py-5 m-0">No Favourites</h3>
       )}
     </div>
   );

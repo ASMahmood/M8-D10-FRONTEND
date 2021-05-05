@@ -1,6 +1,6 @@
 export interface locCoords {
-  lat?: number;
-  lon?: number;
+  lat: number;
+  lon: number;
 }
 
 export interface apiStructure {
@@ -104,7 +104,7 @@ export interface hourlyStructure {
 [];
 
 export interface favsColProps {
-  name?: string;
+  location?: string;
   lat?: number;
   lon?: number;
 }
@@ -128,6 +128,8 @@ export interface reduxStore {
   util: {
     loading: boolean;
     currentHour: number;
+    city: string;
+    country: string;
   };
   forecast: {
     current: {
@@ -194,5 +196,7 @@ export interface reduxStore {
     ];
     timezone: string;
     timezone_offset: number;
+    lat: number;
+    lon: number;
   };
 }
